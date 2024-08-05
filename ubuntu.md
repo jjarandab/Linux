@@ -47,3 +47,65 @@ Reference:
 https://www.digitalocean.com/community/tutorials/how-to-set-up-an-nfs-mount-on-ubuntu-20-04
 
 https://help.ubuntu.com/community/NFSv4Howto
+
+## Disk Cleanup
+
+Docker cleanup (make sure all containers are running)
+
+```bash
+docker system prune -a
+```
+
+Delete previous kernel vesions
+
+```bash
+dnf remove $(dnf repoquery --installonly --latest-limit=-2 -q)
+```
+
+Journal Log Cleanup
+
+```bash
+sudo journalctl --vacuum-size=100M
+```
+
+DNF Package Cleanup
+
+``` bash
+dnf clean packages
+```
+
+## LVM
+
+List LVM
+
+```bash
+lsblk -o name,size,fstype
+```
+
+List Physical Volumes
+
+``` bash
+pvscan
+pvs
+pvdisplay
+```
+
+## Drive Automount
+
+``` bash
+fdisk -l
+blkid
+mkdir /data
+groupadd data
+usermod -aG data USERNAME
+chown -R :data /data
+nano /etc/fstab
+```
+
+Content:
+
+``` bash
+UUID=7e98fbe6-a45c-4276-b301-05d1ae8f4db2 /data    auto nosuid,nodev,nofail,x-gvfs-show 0 0
+mount -a
+```
+
